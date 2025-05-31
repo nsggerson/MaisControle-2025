@@ -1,0 +1,171 @@
+﻿@inherits NewComponentBase
+
+
+<MudLayout Style="zoom: 0.8;">
+    <MudAppBar Dense=true>
+        <MudButtonGroup Color="Color.Transparent" OverrideStyles=false>
+            <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.Home" Href="/" />
+            <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ArrowBack" />
+            <MudIconButton Color="Color.Inherit" Icon="@Icons.Material.Filled.ArrowForward" />
+            <MudIconButton Color="Color.Inherit"
+            Icon="@Icons.Material.Filled.Refresh"
+            OnClick="ReloadPage" />
+        </MudButtonGroup>
+
+        <MudTextField T="string" Class=""
+        AdornmentColor="@colorIcon"
+        Variant="Variant.Outlined"
+        Margin="Margin.Dense"
+        Adornment="Adornment.End"
+        @onclick="HandleFieldClick"
+        OnKeyDown="HandleKeyDown"
+        @bind-Text="@CURRENT_URI"
+        @bind-Value="_searchText"
+        AdornmentIcon="@Icons.Material.Filled.Star"
+        OnAdornmentClick="ButtonTestclick"
+        @onblur="HandleFieldOnblur"
+        Style="flex-grow: 1;
+                        min-width: 750px;
+                        max-width: 1350px;
+                        margin: 0 1rem;
+                        background-color: white;
+                        border-radius: 12px;
+                        border: none;
+                        box-shadow: none;" />
+        @*   <MudSpacer /> *@
+
+        <MudButton Href="users/pagina-pessoal"
+        Style="min-width: auto; padding: 0; border-radius: 35%;">
+            <MudAvatar Size="Size.Medium">
+                <MudImage Alt="Usuário" Width="45" Style="cursor: pointer;" Src="data:image/jpeg;base64,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">
+
+                </MudImage>
+            </MudAvatar>
+            <MudText Style="color:white" Align="Align.Center">&nbsp;&nbsp;<b>@FIRST_NAME</b></MudText>
+        </MudButton>
+        @* <MudIconButton Icon="" Color="Color.Inherit" Edge="Edge.End" /> *@
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" IconColor="Color.Inherit" Dense=true Color="Color.Inherit"
+        AriaLabel="Open user menu">
+            <MudMenuItem Label="Historico" />
+            <MudMenuItem Label="Meus favoritos" />
+            <MudDivider />
+
+            <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
+                Sair do Sistema
+            </MudMenuItem>
+            @if (EXPIRATION_TIME.HasValue)
+            {
+                <MudMenuItem>
+                    <MudText Typo="Typo.caption" HtmlTag="strong"><CountdownComponents ExpiryTime="@EXPIRATION_TIME!.Value" OnExpired="@HandleExpired" /></MudText>
+                </MudMenuItem>
+            }
+        </MudMenu>
+    </MudAppBar>
+    <MudContainer Fixed="true">
+        <SkeletonPage T="object">
+             @Body
+       </SkeletonPage>
+    </MudContainer>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+    bool isShow = false;
+    Color colorIcon = Color.Inherit;
+    public string _searchText { get; set; } = string.Empty;
+    private bool _tenPercentAlerted = false;
+    private double? _initialTotalSeconds;
+
+    protected override void OnInitialized()
+    {
+        if (USER_TIME.HasValue)
+            _initialTotalSeconds = (USER_TIME.Value - DateTime.Now).TotalSeconds;
+    }
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void ButtonTestclick()
+    {
+        isShow = !isShow;
+        colorIcon = isShow ? Color.Warning : Color.Inherit;
+    }
+
+    private void HandleFieldClick()
+    {
+        _searchText = "";
+    }
+
+    private void HandleFieldOnblur()
+    {
+        if (string.IsNullOrWhiteSpace(_searchText))
+        {
+            _searchText = NavigationManager.Uri;
+            StateHasChanged();
+        }
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter") // Verifica se a tecla pressionada foi "Enter"
+        {
+            //_searchText =
+            // Execute sua lógica aqui (ex: buscar dados, submeter formulário, etc.)
+        }
+    }
+
+    private void HandleExpired()
+    {
+        // Faça algo quando o tempo expirar
+        Console.WriteLine("Tempo expirado!");
+    }
+
+    private DateTime? ExpiryTime(DateTime? param)
+    {
+        if (_initialTotalSeconds == null || EXPIRATION_TIME == null)
+            return EXPIRATION_TIME;
+
+        var remainingSeconds = (EXPIRATION_TIME.Value - DateTime.Now).TotalSeconds;
+
+        if (remainingSeconds <= 0)
+            return EXPIRATION_TIME;
+
+        var percentRemaining = remainingSeconds / _initialTotalSeconds.Value;
+
+        if (!_tenPercentAlerted && percentRemaining <= 0.1)
+        {
+            _tenPercentAlerted = true;
+            // ShowModalWarning();
+        }
+
+        return EXPIRATION_TIME;
+    }
+
+    private async Task HandleLogout()
+    {
+        var parameters = new DialogParameters<YesNoDialog>
+        {
+            { x => x.ContentText, "Deseja encerrar sua sessão neste sistema?" },
+            { x => x.ButtonTextYes, "Sim" },
+            { x => x.ColorYes, Color.Warning },
+            { x => x.ColorNo, Color.Error },
+            { x => x.ButtonTextNo, "Cancelar" },
+        };
+
+        bool canceled = await HandleYesNoDialog(
+            title: "Sair do Sistema",
+            maxWidth: MaxWidth.ExtraSmall,
+            parameters: parameters
+        );
+
+        if (!canceled)
+        {
+            // Executar logout se o usuário confirmou
+            TokenStorage.Logout();
+            await ReloadPage();
+        }
+
+    }
+}

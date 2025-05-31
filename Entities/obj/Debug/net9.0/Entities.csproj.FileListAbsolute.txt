@@ -1,0 +1,12 @@
+C:\2025\MaisControle-2025\Entities\bin\Debug\net9.0\Entities.deps.json
+C:\2025\MaisControle-2025\Entities\bin\Debug\net9.0\Entities.dll
+C:\2025\MaisControle-2025\Entities\bin\Debug\net9.0\Entities.pdb
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.csproj.AssemblyReference.cache
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.AssemblyInfoInputs.cache
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.AssemblyInfo.cs
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.csproj.CoreCompileInputs.cache
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.dll
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\refint\Entities.dll
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\Entities.pdb
+C:\2025\MaisControle-2025\Entities\obj\Debug\net9.0\ref\Entities.dll

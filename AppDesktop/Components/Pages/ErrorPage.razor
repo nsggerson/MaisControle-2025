@@ -1,0 +1,61 @@
+﻿@page "/error"
+
+
+
+<MudContainer Class="error-container" MaxWidth="MaxWidth.Medium">
+    <MudPaper Class="pa-8 text-center mt-5" Elevation="0">
+        <MudIcon Class="error-icon" Icon="@Icons.Material.Filled.Error" Color="Color.Error" Size="Size.Large" />
+
+        <MudText Typo="Typo.h4" Class="mt-4 mb-2">Oops! Algo deu errado</MudText>
+
+        <MudText Class="mb-6" Color="Color.Secondary">
+            Desculpe, ocorreu um erro ao processar sua requisição.
+        </MudText>
+
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-6">
+            Página não encontrada ou temporariamente indisponível
+        </MudAlert>
+
+        <div class="d-flex justify-center">
+            <MudButton Variant="Variant.Filled" 
+                       Color="Color.Primary" 
+                       StartIcon="@Icons.Material.Filled.Home"
+                       OnClick="NavigateToHome"
+                       Class="mr-4">
+                Página Inicial
+            </MudButton>
+
+            <MudButton Variant="Variant.Text" 
+                       Color="Color.Secondary" 
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       OnClick="GoBack">
+                Voltar
+            </MudButton>
+        </div>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo(Navigation.ToBaseRelativePath(Navigation.Uri));
+    }
+}
+
+<style>
+    .error-container {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-icon {
+        font-size: 4rem;
+    }
+</style>

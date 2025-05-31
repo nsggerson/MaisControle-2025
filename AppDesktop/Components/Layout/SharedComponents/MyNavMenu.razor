@@ -1,0 +1,41 @@
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
+    <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
+    <MudNavGroup Title="Settings" Expanded="false">
+        <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Users</MudNavLink>
+        <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
+    </MudNavGroup>
+@*     <MudNavLink OnClick="ConfirmLogout" Match="NavLinkMatch.Prefix">Sair</MudNavLink>
+ *@</MudNavMenu>
+
+@* @code {
+    [Inject] private IDialogService DialogService { get; set; }
+
+    private async Task ConfirmLogout()
+    {
+        var dialog = await DialogService.ShowMessageBox(
+            "Confirmação",
+            "Deseja realmente sair do sistema?",
+            yesText: "Sim",
+            cancelText: "Não"
+        );
+
+        if (dialog == true)
+        {
+            await PerformLogout();
+        }
+    }
+
+    private async Task PerformLogout()
+    {
+        try
+        {
+            TokenStorage.Logout();
+            Navigation.NavigateTo("/login", forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao fazer logout: {ex.Message}", Severity.Error);
+        }
+    }
+} *@

@@ -1,0 +1,55 @@
+﻿@using System.Timers
+@implements IDisposable
+
+<MudText Typo=@Typo Class="countdown-text">
+    Tempo limite: @TimeRemaining.ToString(@"mm\:ss")
+</MudText>
+
+@code {
+    [Parameter] public DateTime ExpiryTime { get; set; }
+    [Parameter] public EventCallback OnExpired { get; set; }
+    [Parameter] public Typo Typo { get; set; }
+
+    private TimeSpan TimeRemaining { get; set; }
+    private Timer _timer = default!;
+
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(1000); // 1 segundo
+        _timer.Elapsed += TimerElapsed;
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+
+        UpdateTimeRemaining();
+    }
+
+    private void TimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        UpdateTimeRemaining();
+
+        if (TimeRemaining <= TimeSpan.Zero)
+        {
+            TimeRemaining = TimeSpan.Zero;
+            _timer.Stop();
+            InvokeAsync(OnExpired.InvokeAsync);
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateTimeRemaining()
+    {
+        TimeRemaining = ExpiryTime - DateTime.Now;
+
+        if (TimeRemaining < TimeSpan.Zero)
+        {
+            TimeRemaining = TimeSpan.Zero;
+        }
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}

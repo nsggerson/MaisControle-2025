@@ -1,0 +1,164 @@
+﻿@inherits NewComponentBase
+
+<MudDialog Style="height: auto; width: 80%">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3 mb-n1" />
+            Cadastro de novos usuários
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudGrid>
+                <!-- Nome Completo -->
+                <MudItem xs="12" md="12" lg="12">
+                    <MudTextField @bind-Value="ModelSelected.Name"
+                    For="@(() => ModelSelected.Name)"
+                    Style="background-color: white"
+                    Label="Nome Completo"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Text"
+                    Variant="Variant.Outlined"
+                    Immediate="true"/>
+                </MudItem>                
+
+                <!-- Email -->
+                <MudItem xs="12" md="12">
+                    <MudTextField @bind-Value="ModelSelected.Email"
+                    For="@(() => ModelSelected.Email)"
+                    Style="background-color: white"
+                    Label="Email"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Email"
+                    Variant="Variant.Outlined"
+                    Immediate="true" />
+                </MudItem>
+
+                <!-- Telefone -->
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="ModelSelected.PhoneNumber"
+                    For="@(() => ModelSelected.PhoneNumber)"
+                    Style="background-color: white"
+                    Label="Telefone"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Telephone"
+                    Variant="Variant.Outlined"
+                    OnBlur="@(() => FormatPhoneNumber())"
+                    HelperText="Formato: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX" />
+                </MudItem>
+
+                <!-- CPF -->
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="ModelSelected.Cpf"
+                    For="@(() => ModelSelected.Cpf)"
+                    Style="background-color: white"
+                    Label="CPF"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Text"
+                    Variant="Variant.Outlined"
+                    Immediate="true" />
+                </MudItem>
+
+                <!-- Senha -->
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="ModelSelected.Password"
+                    For="@(() => ModelSelected.Password)"
+                    Style="background-color: white"
+                    Label="Senha"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Password"
+                    Variant="Variant.Outlined"
+                    Immediate="true" />
+                </MudItem>
+
+                <!-- Confirmação de Senha -->
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="ModelSelected.ConfirmPassword"
+                    For="@(() => ModelSelected.ConfirmPassword)"
+                    Style="background-color: white"
+                    Label="Confirme sua senha"
+                    Margin="Margin.Dense"
+                    InputType="InputType.Password"
+                    Variant="Variant.Outlined"
+                    Immediate="true" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Disabled="@_processing" Variant="Variant.Filled" Color="Color.Primary" OnClick="OnValidSubmit">
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">Processando</MudText>
+            }
+            else
+            {
+                <MudText>Gravar</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public Login ModelSelected { get; set; } = new Login();
+    bool success;
+    string[] errors = { };
+    MudForm? form;
+    bool _processing;
+
+
+    private void Cancel()
+    {
+        ModelSelected = null!;
+        MudDialog.Cancel();
+    }
+
+    private async Task OnValidSubmit()
+    {
+        await form!.Validate();
+
+        _processing = true;
+        await Task.Delay(1000);
+
+        if (form!.Errors.Count() > 0)
+        {
+            foreach (var item in form.Errors)
+            {
+                await this._alerts(message: item, Severity.Error);
+            }
+            _processing = false;
+            return;
+        }
+        var result = await SendDataAsync(url: "users/adicionarusuario", userModel: ModelSelected);
+
+        if (result.Errors is not null && result.Errors.Count > 0)
+        {
+            foreach (var item in result.Errors)
+            {
+                await this._alerts(message: item, Severity.Error);
+            }
+            _processing = false;
+            return;
+        }
+
+        await this._alerts(message: result.Message!, severity: result.Success ? Severity.Success : Severity.Error);
+
+        if (result.Success)
+        {
+            ModelSelected = null!;
+            MudDialog.Cancel();
+        }
+        _processing = false;
+    }
+
+    private void FormatPhoneNumber()
+    {
+        form!.Errors.Clone();
+        // Isso irá disparar a validação customizada que já formata o telefone
+        form!.Validate();
+    }
+}

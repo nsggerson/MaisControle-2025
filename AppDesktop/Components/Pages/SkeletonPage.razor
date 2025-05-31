@@ -1,0 +1,92 @@
+﻿@inherits NewComponentBase
+@typeparam T
+
+@if (StartPage.InicializedPage)
+{
+    @ChildContent   
+    @** CurrentPath.DestinationPageName = "Loading";*@
+}
+else
+{
+    <MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+        <!-- Cabeçalho skeleton -->
+        <div class="d-flex align-center mb-4">
+            <MudSkeleton Width="40px" Height="40px" Variant="SkeletonVariant.Circle" Class="mr-2" />
+            <MudSkeleton Width="120px" Height="30px" Variant="SkeletonVariant.Text" />
+            <div class="flex-grow-1"></div>
+            <MudSkeleton Width="80px" Height="40px" Variant="SkeletonVariant.Rect" Class="mr-2" />
+            <MudSkeleton Width="80px" Height="40px" Variant="SkeletonVariant.Rect" Class="mr-2" />
+            <MudSkeleton Width="40px" Height="40px" Variant="SkeletonVariant.Circle" />
+        </div>
+
+        <!-- Barra de pesquisa skeleton -->
+        <MudSkeleton Width="100%" Height="56px" Variant="SkeletonVariant.Rect" Class="mb-6" />
+
+        <!-- Conteúdo principal (estilo YouTube) -->
+        <div class="d-flex flex-wrap">
+            @for (var i = 0; i < 8; i++)
+            {
+                <div class="pa-2" style="width: 25%;">
+                    <MudSkeleton Width="100%" Height="180px" Variant="SkeletonVariant.Rect" Class="mb-2" />
+                    <div class="d-flex">
+                        <MudSkeleton Width="40px" Height="40px" Variant="SkeletonVariant.Circle" Class="mr-2" />
+                        <div style="width: 100%;">
+                            <MudSkeleton Width="90%" Height="20px" Variant="SkeletonVariant.Text" Class="mb-1" />
+                            <MudSkeleton Width="60%" Height="16px" Variant="SkeletonVariant.Text" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Progress circular centralizado (sobreposto) -->
+        <div class="progress-overlay">
+            <MudProgressCircular Color="Color.Primary"
+            Style="height:70px;width:70px;"
+            Indeterminate="true" />
+        </div>
+    </MudContainer>
+}
+
+<style>
+    .progress-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    }
+
+    @@media (max-width: 960px) {
+    .d-flex div[style*="width: 25%"] {
+    width: 33.33% !important;
+    }
+    }
+
+    @@media (max-width: 600px) {
+    .d-flex div[style*="width: 25%"] {
+    width: 50% !important;
+    }
+    }
+</style>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool IsValid = false;
+
+    private bool? EndCiclo
+    {
+        get => null!; 
+        set
+        {
+            CurrentPath.DestinationPageName = null!;
+        }
+    }
+
+    private bool PerformValidations()
+    {
+        // Sua lógica de validação aqui
+        return DateTime.Now.Second % 2 == 0;  // Exemplo
+    }
+}

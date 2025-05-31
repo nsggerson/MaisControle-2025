@@ -1,0 +1,12 @@
+C:\2025\MaisControle-2025\Helpers\bin\Debug\net9.0\Helpers.deps.json
+C:\2025\MaisControle-2025\Helpers\bin\Debug\net9.0\Helpers.dll
+C:\2025\MaisControle-2025\Helpers\bin\Debug\net9.0\Helpers.pdb
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.csproj.AssemblyReference.cache
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.GeneratedMSBuildEditorConfig.editorconfig
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.AssemblyInfoInputs.cache
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.AssemblyInfo.cs
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.csproj.CoreCompileInputs.cache
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.dll
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\refint\Helpers.dll
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\Helpers.pdb
+C:\2025\MaisControle-2025\Helpers\obj\Debug\net9.0\ref\Helpers.dll

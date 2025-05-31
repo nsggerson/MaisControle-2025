@@ -1,0 +1,167 @@
+﻿
+@page "/cadastro"
+
+
+
+<div class="register-cloud-container">
+    <div class="clouds">
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+    </div>
+
+    <div class="custom-card">
+        <div class="card-content">
+            <div class="text-center mb-4 mb-sm-6">
+                <h3 class="card-title">Cadastro</h3>
+            </div>
+
+            <EditForm Model="@registerModel" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="ShowValidationErrors">
+                <DataAnnotationsValidator />
+
+                <div class="custom-input-group">
+                    <MudTextField @bind-Value="registerModel.Email"
+                    Label="Email"
+                    Variant="Variant.Outlined"
+                    FullWidth="true"
+                    Class="mb-3 mb-sm-4"
+                    Margin="Margin.Dense"
+                    For="@(() => registerModel.Email)"
+                    ErrorText=""
+                    Error="@false" />
+                </div>
+
+                <div class="custom-input-group">
+                    <MudTextField @bind-Value="registerModel.Cpf"
+                    Label="CPF"
+                    Variant="Variant.Outlined"
+                    FullWidth="true"
+                    Class="mb-3 mb-sm-4"
+                    Margin="Margin.Dense"
+                    For="@(() => registerModel.Cpf)"
+                    ErrorText=""
+                    Error="@false" />
+                </div>
+
+                <div class="custom-input-group">
+                    <MudTextField @bind-Value="registerModel.Password"
+                    Label="Senha"
+                    Variant="Variant.Outlined"
+                    FullWidth="true"
+                    InputType="InputType.Password"
+                    Class="mb-3 mb-sm-4"
+                    Margin="Margin.Dense"
+                    For="@(() => registerModel.Password)"
+                    ErrorText=""
+                    Error="@false" />
+                </div>
+
+                <div class="custom-input-group">
+                    <MudTextField @bind-Value="registerModel.ConfirmPassword"
+                    Label="Confirmar Senha"
+                    Variant="Variant.Outlined"
+                    FullWidth="true"
+                    InputType="InputType.Password"
+                    Class="mb-3 mb-sm-4"
+                    Margin="Margin.Dense"
+                    For="@(() => registerModel.ConfirmPassword)"
+                    ErrorText=""
+                    Error="@false" />
+                </div>
+
+                <div class="text-center mt-4 mt-sm-6">
+                    <button type="submit" class="custom-button">
+                        Cadastrar
+                    </button>
+                </div>
+            </EditForm>
+
+            <div class="d-flex justify-center mt-3 mt-sm-4">
+                <MudLink Href="/" Class="custom-link">Já tem conta? Faça login</MudLink>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private  Login registerModel = new Login();
+ 
+    protected override void OnInitialized()
+    {
+        ConfigureSnackbar();
+    }
+
+    private void ConfigureSnackbar()
+    {
+        Snackbar.Configuration.PositionClass = "Defaults.Classes.Position.BottomStart";
+        Snackbar.Configuration.SnackbarVariant = Variant.Filled;
+        Snackbar.Configuration.BackgroundBlurred = true;
+        Snackbar.Configuration.MaximumOpacity = 90;
+        Snackbar.Configuration.VisibleStateDuration = 10000;
+        Snackbar.Configuration.ShowTransitionDuration = 200;
+        Snackbar.Configuration.HideTransitionDuration = 200;
+    }
+
+    private async void HandleValidSubmit()
+    {
+        var json = JsonSerializer.Serialize(registerModel);
+        var result = await LocalRouter.ExecuteAsync("users/adicionarusuario", json);
+
+        if (!result.Success)
+        {
+            if (result.StatusCode == 500)
+            {
+                Snackbar.Add(result.Errors[1], Severity.Error);
+                return;
+            }
+
+            foreach (var item in result.Errors)
+            {
+                Snackbar.Add(item, Severity.Error);
+            }
+            return;
+        }
+
+        Snackbar.Add("Cadastro realizado com sucesso!", Severity.Success);
+
+        // Espera um pouquinho antes de redirecionar (opcional)
+        await Task.Delay(1500).ContinueWith(_ =>
+        {
+            // Redireciona para a Home ("/" ou "/home" dependendo da sua rota)
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Navigation.NavigateTo("/Login");
+            });
+        });        
+    }
+
+    private void ShowValidationErrors()
+    {
+        Snackbar.Clear();
+
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(registerModel);
+        Validator.TryValidateObject(registerModel, validationContext, validationResults, true);
+
+        foreach (var error in validationResults)
+        {
+            foreach (var memberName in error.MemberNames)
+            {
+                Snackbar.Add(error.ErrorMessage!, Severity.Error, config =>
+                {
+                    config.BackgroundBlurred = true;
+                    config.RequireInteraction = false;
+                    config.ShowCloseIcon = true;
+                    //config.ActionVariant = Color.Default;
+                    config.IconColor = Color.Default;
+                });
+            }
+        }
+    }
+}
+
+<style scoped>
+    @((MarkupString)StyleCss._styleCadastro)
+</style>

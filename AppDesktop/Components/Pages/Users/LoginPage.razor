@@ -1,0 +1,151 @@
+﻿@page "/user/login"
+@inherits NewComponentBase
+
+<style>
+    @@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
+
+    body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    }
+
+    .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    }
+
+    .form-signin .checkbox {
+    font-weight: 400;
+    }
+</style>
+
+<MudItem Class="text-center">
+    <EditForm Model="@loginInput" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <main class="form-signin">            
+            @*             <img class="mb-4" src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="Logo" width="72" height="57">
+ *@            <h1 class="h3 mb-3 fw-normal">LOGIN</h1>
+            <div class="form-floating">
+                <MudTextField @bind-Value="loginInput.Username"
+                For="@(() => loginInput.Username)"
+                Style="background-color: white"
+                Label="Nome usuário, cpf ou e-mail"
+                InputType="InputType.Text"
+                Variant="Variant.Outlined" />
+            </div>
+            <div class="form-floating">
+                <MudTextField @bind-Value="loginInput.Password"
+                For="@(() => loginInput.Password)"
+                Style="background-color: white"
+                Label="Senha de usuário" 
+                Variant="Variant.Outlined" 
+                InputType="@PasswordInput" 
+                Adornment="Adornment.End" 
+                AdornmentIcon="@PasswordInputIcon" 
+                OnAdornmentClick="ButtonTestclick"
+                AdornmentAriaLabel="Apresentar senha" />
+            </div>
+
+            @*             <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Lembre de mim
+                </label>
+            </div> *@
+
+            <MudButton Disabled="@_processing" ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">                
+                @if (_processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2">Processando</MudText>
+                }
+                else
+                {
+                    <MudText>Entrar</MudText>
+                }
+            </MudButton>
+
+            <MudLink Disabled=_processing Class="d-flex justify-start flex-grow-1 gap-4 mt-4" Color=Color.Dark OnClick="OnloadingDialog">
+                Criar uma conta
+            </MudLink>
+            <p class="mt-5 mb-3 text-muted">© 2025</p>  
+        </main>
+    </EditForm>
+</MudItem>
+
+@code {
+
+    private InputModel loginInput { get; set; } = new InputModel();
+    private Login? login;
+    bool isShow;
+    private bool _processing = false;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    private void ButtonTestclick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        _processing = true;
+        await Task.Delay(2000);
+            var data = new InputModel
+            {
+                Username = ((InputModel)context.Model).Username,
+                Password = ((InputModel)context.Model).Password,
+            };
+
+        var result = await SendDataAsync(url: "auth/login",userModel: data);
+
+        if (!result.Success)
+        {
+            var message = (string)result.Errors[0];
+           await this._alerts(severity: Severity.Error, message: result.Message!);
+            loginInput = new InputModel();
+            _processing = false;
+            StateHasChanged();
+            return;
+        }
+
+        await TokenStorage.SetTokenAsync((string)result.Value!);
+        NavigationManager.NavigateTo("/", forceLoad: true);
+        CurrentPath.LoginSuccess = true;
+        //Navigation.NavigateTo("/");
+        await this._alerts(message: result.Message!, severity: Severity.Success);
+        StateHasChanged();
+    }
+
+    private async Task OnloadingDialog()
+    {
+        login = new Login();
+        var parameters = new DialogParameters<CadastrarDialog> { { x => x.ModelSelected, login } };
+
+
+        var dialog = await DialogService.ShowAsync<CadastrarDialog>("Cadatrar usuário", parameters);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+        {
+            //In a real world scenario we would reload the data from the source here since we "removed" it in the dialog already.
+            Guid.TryParse(result.Data!.ToString(), out Guid deletedServer);
+           // Servers.RemoveAll(item => item.Id == deletedServer);
+        }
+    }
+}

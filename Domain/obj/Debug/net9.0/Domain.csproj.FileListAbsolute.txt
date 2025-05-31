@@ -1,0 +1,15 @@
+C:\2025\MaisControle-2025\Domain\bin\Debug\net9.0\Domain.deps.json
+C:\2025\MaisControle-2025\Domain\bin\Debug\net9.0\Domain.dll
+C:\2025\MaisControle-2025\Domain\bin\Debug\net9.0\Domain.pdb
+C:\2025\MaisControle-2025\Domain\bin\Debug\net9.0\Entities.dll
+C:\2025\MaisControle-2025\Domain\bin\Debug\net9.0\Entities.pdb
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.csproj.AssemblyReference.cache
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.AssemblyInfoInputs.cache
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.AssemblyInfo.cs
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.csproj.CoreCompileInputs.cache
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.csproj.Up2Date
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.dll
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\refint\Domain.dll
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\Domain.pdb
+C:\2025\MaisControle-2025\Domain\obj\Debug\net9.0\ref\Domain.dll
