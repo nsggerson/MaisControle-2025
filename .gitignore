@@ -15,6 +15,8 @@
 # Visual Studio 2022 workspace
 .vscode/
 .vs/
+.VS/
+~vs/
 # NuGet
 *.nupkg
 *.snupkg
@@ -58,3 +60,23 @@ Thumbs.db
 *.tmp
 *.bak
 *.old
+
+# Visual Studio Code
+.vscode/
+.Domain/bin/
+.Domain/obj/
+
+.Entities/bin/
+.Entities/obj/
+
+.Helpers/bin/
+.Helpers/obj/
+
+.Infra/bin/
+.Infra/obj/
+
+.Services/bin/
+.Services/obj/
+
+.Web/bin/
+.Web/obj/
